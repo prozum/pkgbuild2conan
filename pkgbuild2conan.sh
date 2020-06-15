@@ -16,6 +16,12 @@ if [[ $? -ne 0 ]]; then
 fi
 source /tmp/$1.PKGBUILD
 
+# Gather package name
+if [ -n "$pkgbase" ]; then
+    pkgname=$pkgbase
+fi
+pkgname_camel=$(echo "$pkgname" | awk -F"-" '{for(i=1;i<=NF;i++){$i=toupper(substr($i,1,1)) substr($i,2)}} 1' OFS="")
+
 # Gather build system commands
 build=$(declare -f build | sed -e '1,2d;$ d;s/^[ \t]*//')
 case "$build" in
@@ -40,8 +46,6 @@ case "$build" in
     import_build_system="AutoToolsBuildEnvironment, "
     ;;
 esac
-
-pkgname_camel=$(echo "$pkgname" | awk -F"-" '{for(i=1;i<=NF;i++){$i=toupper(substr($i,1,1)) substr($i,2)}} 1' OFS="")
 
 echo -e "import os"
 echo -e ""
