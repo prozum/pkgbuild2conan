@@ -55,10 +55,10 @@ echo -e "    license = \"$license\""
 echo -e "    settings = \"os\", \"arch\", \"compiler\", \"build_type\""
 echo -e ""
 echo -e "    def build_requirements(self):"
-echo -e "        self.build_requires(\"generators/1.0.0@%s/stable\" % self.user)"
+echo -e "        self.build_requires(\"generators/1.0.0@{}/stable\".format(self.user))"
 case "$build_system" in
   autotools|make)
-    echo -e "        self.build_requires(\"autotools/1.0.0@%s/stable\" % self.user)"
+    echo -e "        self.build_requires(\"autotools/1.0.0@{}/stable\".format(self.user))"
     ;;
 esac
 for dep in "${makedepends[@]}"
@@ -68,7 +68,7 @@ do
     wget https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$dep -qO /tmp/$dep.PKGBUILD
   fi
   depver=$(grep pkgver= /tmp/$dep.PKGBUILD | cut -b 8-)
-	echo -e "        self.build_requires(\"$dep/[>=$depver]@%s/stable\" % self.user)"
+	echo -e "        self.build_requires(\"$dep/[>=$depver]@{}/stable\".format(self.user))"
 done
 echo -e ""
 
@@ -82,7 +82,7 @@ if [[ ${#depends[@]} -ne 0 ]]; then
       wget https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$dep -qO /tmp/$dep.PKGBUILD
     fi
     depver=$(grep pkgver= /tmp/$dep.PKGBUILD | cut -b 8-)
-  	echo -e "        self.requires(\"$dep/[>=$depver]@%s/stable\" % self.user)"
+  	echo -e "        self.requires(\"$dep/[>=$depver]@{}/stable\".format(self.user))"
   done
   echo -e ""
 fi
@@ -96,7 +96,7 @@ echo -e "    def build(self):"
 case "$build_system" in
   cmake)
     echo -e "        cmake = CMake(self, generators=\"Ninja\")"
-    echo -e "        cmake.configure(source_folder=\"%s-%s\" % (self.name, self.version))"
+    echo -e "        cmake.configure(source_folder=\"{}-{}\".format(self.name, self.version))"
     echo -e "        cmake.build()"
     echo -e "        cmake.install()"
     ;;
@@ -104,7 +104,7 @@ case "$build_system" in
     echo -e "        args = ["
     echo -e "            \"--disable-static\","
     echo -e "        ]"
-    echo -e "        with tools.chdir(\"%s-%s\" % (self.name, self.version)):"
+    echo -e "        with tools.chdir(\"{}-{}\".format(self.name, self.version)):"
     echo -e "            autotools = AutoToolsBuildEnvironment(self)"
     echo -e "            autotools.configure(args=args)"
     echo -e "            autotools.make()"
@@ -112,15 +112,15 @@ case "$build_system" in
     ;;
   meson)
     echo -e "        meson = Meson(self)"
-    echo -e "        meson.configure(source_folder=\"%s-%s\" % (self.name, self.version))"
+    echo -e "        meson.configure(source_folder=\"{}-{}\".format(self.name, self.version))"
     echo -e "        meson.install()"
     ;;
   python)
-    echo -e "        with tools.chdir(\"%s-%s\" % (self.name, self.version)):"
-    echo -e "            self.run('python setup.py install --optimize=1 --prefix= --root=\"%s\"' % self.package_folder)"
+    echo -e "        with tools.chdir(\"{}-{}\".format(self.name, self.version)):"
+    echo -e "            self.run('python setup.py install --optimize=1 --prefix= --root=\"{}\"'.format(self.package_folder))"
     ;;
   make)
-    echo -e "        with tools.chdir(\"%s-%s\" % (self.name, self.version)):"
+    echo -e "        with tools.chdir(\"{}-{}\".format(self.name, self.version)):"
     echo -e "            autotools = AutoToolsBuildEnvironment(self)"
     echo -e "            autotools.make()"
     echo -e "            autotools.install()"
