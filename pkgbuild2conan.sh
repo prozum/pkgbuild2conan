@@ -84,14 +84,14 @@ if [[ ${#depends[@]} -ne 0 ]]; then
   	echo -e "        \"$dep/[>=$depver]\","
   done
   echo -e "    )"
-  echo -e ""
 fi
 
 download=$(echo "${source[0]}" | sed "s/$pkgver/{self.version}/g")
+echo -e ""
 echo -e "    def source(self):"
 echo -e "        tools.get(f\"$download\")"
-echo -e ""
 
+echo -e ""
 echo -e "    def build(self):"
 case "$build_system" in
   cmake)
