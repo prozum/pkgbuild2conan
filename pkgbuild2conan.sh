@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+# Print config.yml argument
+if [ "$1" == "-c" ]; then
+    print_config=1
+    shift
+fi
+
 if [[ -z "$1" ]] ; then
     echo "No argument supplied!"
-    echo "Usage: pkgbuild2conan PKGBUILD-NAME"
+    echo "Usage: pkgbuild2conan [-c] PKGBUILD-NAME"
     exit 1
 fi
 
@@ -15,6 +21,14 @@ if [[ $? -ne 0 ]]; then
   wget https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$1 -qO /tmp/$1.PKGBUILD
 fi
 source /tmp/$1.PKGBUILD
+
+# Print config.yml
+if [[ $print_config -eq 1 ]]; then
+  echo -e "versions:"
+  echo -e "  \"$pkgver\":"
+  echo -e "    folder: all"
+  exit 0
+fi
 
 # Gather package name
 if [ -n "$pkgbase" ]; then
