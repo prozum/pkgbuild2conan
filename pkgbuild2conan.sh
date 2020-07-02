@@ -12,15 +12,17 @@ if [[ -z "$1" ]] ; then
     exit 1
 fi
 
+pkg="${1//+/%2B}"
+
 # Load PKGBUILD
-wget https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$1 -qO /tmp/$1.PKGBUILD
+wget https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/$pkg -qO /tmp/$pkg.PKGBUILD
 if [[ $? -ne 0 ]]; then
-  wget https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$1 -qO /tmp/$1.PKGBUILD
+  wget https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/$pkg -qO /tmp/$pkg.PKGBUILD
 fi
 if [[ $? -ne 0 ]]; then
-  wget https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$1 -qO /tmp/$1.PKGBUILD
+  wget https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$pkg -qO /tmp/$pkg.PKGBUILD
 fi
-source /tmp/$1.PKGBUILD
+source /tmp/$pkg.PKGBUILD
 
 # Print config.yml
 if [[ $print_config -eq 1 ]]; then
