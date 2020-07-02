@@ -72,7 +72,9 @@ esac
 # Output Conan recipe
 echo -e "from conans import *"
 echo -e ""
+echo -e ""
 echo -e "class ${pkgname_camel}Conan(ConanFile):"
+echo -e "    name = \"$pkgname\""
 echo -e "    description = \"$pkgdesc\""
 echo -e "    license = \"$license\""
 echo -en "    settings = {\"os\": [\"Linux\"]"
