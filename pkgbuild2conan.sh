@@ -135,7 +135,7 @@ echo -e ""
 echo -e "    def build(self):"
 case "$build_system" in
   cmake)
-    echo -e "        cmake = CMake(self, generators=\"Ninja\")"
+    echo -e "        cmake = CMake(self, generator=\"Ninja\")"
     echo -e "        cmake.configure(source_folder=f\"{self.name}-{self.version}\")"
     echo -e "        cmake.build()"
     echo -e "        cmake.install()"
