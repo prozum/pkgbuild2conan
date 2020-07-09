@@ -94,9 +94,9 @@ echo -e "class ${pkgname_camel}Conan(ConanFile):"
 echo -e "    name = \"$pkgname\""
 echo -e "    description = \"$pkgdesc\""
 echo -e "    license = \"$license\""
-echo -en "    settings = {\"os\": [\"Linux\"]"
+echo -en "    settings = {\"os_build\": [\"Linux\"]"
 if [ "${arch[0]}" != "any" ]; then
-  echo -en ", \"arch\": [\"x86_64\", \"armv8\"]"
+  echo -en ", \"arch_build\": [\"x86_64\", \"armv8\"]"
 fi
 echo -e "}"
 
@@ -136,7 +136,7 @@ if [[ ${#depends[@]} -ne 0 ]]; then
 fi
 
 echo -e "    requires = ("
-echo -e "        \"generators/[^1.0.0]\","
+echo -e "        \"base/[^1.0.0]\","
 
 if [ -n "$alpine" ]; then
   for dep in $depends
